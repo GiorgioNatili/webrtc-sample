@@ -21,14 +21,33 @@ var rtc = easyrtc.listen(httpApp, socketServer, {logLevel:"debug", logDateEnable
 
 easyrtc.on("getIceConfig", function(connectionObj, callback){
 
-    var iceConfig = [{url:'stun:box.sparvoli.com:3478'}];
+    http.get("http://api.turnservers.com/json/turn?key=VlLGpWQoIgTcshHBBFuHLQxKIgIxkBvN", function(res){
 
-    iceConfig.push({
-      //  'url': tsPacket.uris[i],
-        'username': 'giorgionatili',
-        'credential': '3uph0n1c0'
+        var data = '';
+        res.on('data', function (chunk){
+            data += chunk;
+        });
+        res.on('end',function(){
+
+            var tsPacket = JSON.parse(data);
+
+            console.log(tsPacket)
+
+            // TODO: Proper error handling to ensure request succeeded.
+            console.log(tsPacket);
+
+            var iceConfig = [{url:"stun:stun.turnservers.com:3478"}];
+
+            for (var i = 0; i < tsPacket.uris.length; i++) {
+                iceConfig.push({
+                    "url":tsPacket.uris[i],
+                    "username":tsPacket.username,
+                    "credential":tsPacket.password
+                });
+            }
+
+            callback(null, iceConfig);
+        })
     });
-
-    callback(null, iceConfig);
 
 });
