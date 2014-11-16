@@ -17,4 +17,18 @@ var webServer = http.createServer(httpApp).listen(8080);
 var socketServer = io.listen(webServer, {"log level":1});
 
 // Start EasyRTC server
-var rtc = easyrtc.listen(httpApp, socketServer);
+var rtc = easyrtc.listen(httpApp, socketServer, {logLevel:"debug", logDateEnable:true});
+
+easyrtc.on("getIceConfig", function(connectionObj, callback){
+
+    var iceConfig = [{url:'stun:box.sparvoli.com:3478'}];
+
+    iceConfig.push({
+      //  'url': tsPacket.uris[i],
+        'username': 'giorgionatili',
+        'credential': '3uph0n1c0'
+    });
+
+    callback(null, iceConfig);
+
+});
