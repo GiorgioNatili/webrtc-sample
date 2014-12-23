@@ -21,7 +21,7 @@ var rtc = easyrtc.listen(httpApp, socketServer, {logLevel:"debug", logDateEnable
 
 easyrtc.on("getIceConfig", function(connectionObj, callback){
 
-    var iceConfig = [{url:'stun:box.sparvoli.com:3478'}];
+    var iceConfig = [{url:'stun:192.184.87.98:3478'}];//[{url:'stun:box.sparvoli.com:3478'}];
 
     iceConfig.push({
       //  'url': tsPacket.uris[i],
